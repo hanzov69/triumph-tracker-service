@@ -6,7 +6,7 @@
 (This one is tough- while they claim to have deprecated `service_log_path`, for geckodriver there isn't a native flag that I see)
 
 ## Container Stuff
-- [ ] Create Container that can run selenium based on https://github.com/m9brady/triumph-tracker
+- [x] Create Container that can run selenium based on https://github.com/m9brady/triumph-tracker
 - [ ] selenium job as cron/timed event
 - [ ] display pretty page with stats from selenium job
 - [ ] Store container in github registry

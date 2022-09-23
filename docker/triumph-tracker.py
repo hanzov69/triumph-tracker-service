@@ -116,10 +116,6 @@ def get_data_for_player(browser, seal, player_name, url):
     wait = WebDriverWait(browser, timeout=40, poll_frequency=1)
     element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, seal_selector)))
 
-    #browser.implicitly_wait(30)
-
-    screenshot = browser.save_screenshot('2.png')
-
     button = browser.find_element(By.CSS_SELECTOR, seal_selector)
     button.click()
     # get triumph table for wanted seal
@@ -233,7 +229,7 @@ if __name__ == '__main__':
         exit()
     browser = webdriver.Firefox(
         service=FirefoxService(GeckoDriverManager().install()),
-        
+
         options=BROWSER_OPTS,
         service_log_path=(repo_dir / 'geckodriver' / 'geckodriver.log')
     )
