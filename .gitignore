@@ -2,3 +2,4 @@ geckodriver.log
 *.csv
 *_status.html
 *.json
+*.pat
