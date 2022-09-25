@@ -12,7 +12,7 @@ RUN apk update && \
 RUN pip install --upgrade pip
 
 # install selenium lxml
-RUN pip install selenium lxml webdriver-manager json2html
+RUN pip install selenium lxml webdriver-manager json2table argparse pathlib
 
 RUN mkdir -p /app
 COPY app/* /app
