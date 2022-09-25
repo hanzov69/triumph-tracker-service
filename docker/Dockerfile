@@ -11,11 +11,13 @@ RUN apk update && \
 # upgrade pip
 RUN pip install --upgrade pip
 
-# install selenium lxml
-RUN pip install selenium lxml webdriver-manager json2table argparse pathlib
-
 RUN mkdir -p /app
 COPY app/* /app
 
 # Set path since we're using prebuilt from alpine
 ENV PYTHONPATH /usr/lib/python3.10/site-packages
+
+# install requirements
+RUN pip install -r ./app/requirements.txt
+
+
