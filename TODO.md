@@ -2,8 +2,10 @@
 
 ## Code
 - [x] Selenium 4 `DeprecationWarning: executable_path has been deprecated, please pass in a Service object` _fixed?_
-- [ ] Selenium 4 `DeprecationWarning: service_log_path has been deprecated, please pass in a Service object`
+- [x] Selenium 4 `DeprecationWarning: service_log_path has been deprecated, please pass in a Service object`
 (This one is tough- while they claim to have deprecated `service_log_path`, for geckodriver there isn't a native flag that I see)
+- [x] Add some args support (quiet)
+- [x] output in json
 
 ## Container Stuff
 - [x] Create Container that can run selenium based on https://github.com/m9brady/triumph-tracker

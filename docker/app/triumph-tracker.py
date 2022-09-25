@@ -1,13 +1,19 @@
 # builtin
 import re
+import os
+import logging
+import json
 from datetime import datetime
 from io import StringIO
 from json import dumps
 from pathlib import Path
+from json2table import *
+
 
 # third-party
 import lxml.etree as ET
 import pandas as pd
+import argparse
 
 pd.set_option('display.max_columns', 10)
 pd.set_option('display.width', 200)
@@ -18,6 +24,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-j', '--jsonout', action='store_true', help="instead of creating csv's, create .json files instead")
+parser.add_argument('-q', '--quiet', action='store_true', help="suppresses normal output, useful for scripting/services" )
+parser.add_argument('-w', '--htmlout', action='store_true', help="instead of creating csv's, create .html instead" )
+args = parser.parse_args()
+
+os.environ['WDM_LOG'] = str(logging.NOTSET)
 TIMEOUT_DELAYS = 45 # seconds
 BROWSER_OPTS = webdriver.FirefoxOptions()
 BROWSER_OPTS.add_argument("--headless")
@@ -83,21 +96,21 @@ GREYDERS_TRANSLATE = {
     'kingslayer': pd.DataFrame(
         data={
             'meaning': [
-                'Finish Raid', "One of each Secret Chest", "Bro-Down", 'All Arc', 'All Solar',
+                'Finish Raid', 'One of each Secret Chest', 'Bro-Down', 'All Arc', 'All Solar',
                 'All Void', 'Same Class', 'Opening - swap dunkers', 'Totems Challenge', 
                 'Totems - only 1 player on plate at a time', 'Warpiest Challenge', 'Warpiest - swap brandkillers',
                 'Golgy Challenge', 'Golgy - swap taunters', 'Daughters Challenge',
-                "Daughters - taken player can't touch the ground", 'Oryx Challenge', 'Oryx - get last stand in 1 round', 
+                'Daughters - taken player can\'t touch the ground', 'Oryx Challenge', 'Oryx - get last stand in 1 round', 
                 'Finish Master Raid', 'Challenges in Master Mode', 'Badge'
             ]
         },
         index=pd.Index(
             data=[
-                "King's Fall", "King's Ransom", "Court of Jesters", "Spark of Defiance", "Sunburst",
-                "The Abyssal Society", "Hive Mind", "Controlled Dunks", "The Grass is Always Greener",
-                "Overzealous", "Devious Thievery", "Brand Buster", "Gaze Amaze", "Taking Turns",
-                "Under Construction", "The Floor is Lava", "Hands Off", "Overwhelming Power",
-                "One True King", "King of Kings", "Raid: King's Fall"
+                'King\'s Fall', 'King\'s Ransom', 'Court of Jesters', 'Spark of Defiance', 'Sunburst',
+                'The Abyssal Society', 'Hive Mind', 'Controlled Dunks', 'The Grass is Always Greener',
+                'Overzealous', 'Devious Thievery', 'Brand Buster', 'Gaze Amaze', 'Taking Turns',
+                'Under Construction', 'The Floor is Lava', 'Hands Off', 'Overwhelming Power',
+                'One True King', 'King of Kings', 'Raid: King\'s Fall'
             ],
             name='Kingslayer Triumphs'
         )
@@ -162,7 +175,7 @@ def df_to_csv(df, seal):
     '''
     Output only the not-completed-by-everyone triumphs for the given seal
     '''
-    out_csv = Path(f'./out_csv/{seal}_status_{datetime.today().strftime("%Y%m%d")}.csv')
+    out_csv = Path(f'./{seal}_status_new.csv')
     if not out_csv.parent.exists():
         out_csv.parent.mkdir()
     if out_csv.exists():
@@ -181,40 +194,64 @@ def df_to_csv(df, seal):
     with out_csv.open('w', encoding='utf-8') as f:
         f.write(str(remaining))
 
-def df_to_csv_pretty(df, seal):
+def compararator():
     '''
-    Just because
+    Not used currently, still thinking about it
     '''
-    out_csv = Path(f'./out_csv/{seal}_status_{datetime.today().strftime("%Y%m%d")}_pretty.csv')
-    if not out_csv.parent.exists():
-        out_csv.parent.mkdir()
-    if out_csv.exists():
-        out_csv.unlink()    
-    cols = df.columns
-    vals = df.values
-    first_col_width = max([len(val) for val in df.index])
-    second_col_width = max([len(val[0]) for val in vals])
-    col_widths = [len(col) for col in cols]
-    buffer = ['═' * col_width for col_width in col_widths[1:]]
-    first_line = '╔' + '═' * first_col_width + '╦' + '═' * second_col_width + '╦' + '╦'.join(buffer) + '╗'
-    header = '║' + ' ' * first_col_width + '║' + 'meaning'.rjust(second_col_width) + '║' + '║'.join(cols[1:]) + '║'
-    footer = '╠' + '═' * first_col_width + '╬' + '═' * second_col_width + '╬' + '╬'.join(buffer) + '╣'
-    table = '\n'.join([first_line, header, footer])
-    for idx, row in enumerate(vals):
-        padded = [str(v).rjust(i) for v,i in zip(row[1:], col_widths[1:])]
-        row_text = '║' + df.index[idx].ljust(first_col_width) + '║' + row[0].rjust(second_col_width) + '║' + '║'.join(padded) + '║'
-        table += f'\n{row_text}'
-        footer_cap = True if idx == len(vals) - 1 else False
-        if footer_cap:
-            cap = '╚' + '═' * first_col_width + '╩' + '═' * second_col_width + '╩' + '╩'.join(buffer) + '╝'
-            table += f'\n{cap}'
-        else:
-            table += f'\n{footer}'
-    if not out_csv.exists():
-        with out_csv.open(mode='w', encoding='utf-8') as f:
-            f.out_csv(table)
+    raidnames = ["kingslayer", "rivensbane", "disciple-slayer"]
+    for x in raidnames:
+        f1 = f"{x}_status_latest.csv"
+        f2 = f"{x}_status_new.csv"
+        if os.path.exists(f2):
+            try:
+                filecmp.clear_cache()
+                result = filecmp.cmp(f1, f2, shallow=False)
+                if result == 0:
+                    os.rename(f2, f1)
+            except FileNotFoundError:
+                os.rename(f2, f1)
 
-if __name__ == '__main__':
+def json_write(jsonformat, seal):
+    '''
+    This will write out a json representation of the dataframe, pay attention to orient
+    '''
+    out_json = Path(f'./{seal}_status_new.json')
+    with out_json.open('w', encoding='utf-8') as f:
+        f.write(str(jsonformat))
+
+def html_write(htmlform, seal):
+    '''
+    I know these file operations are inefficient/bad, but I'm dumb
+    '''
+    out_json = Path(f'./{seal}_status_new.json')
+    with out_json.open('w', encoding='utf-8') as f:
+        f.write(str(jsonformat))
+        f.close()
+    with out_json.open('r', encoding='utf-8') as f:
+        json_data = json.load(f)
+        if 'schema' in json_data:
+            del json_data['schema']
+    
+    with out_json.open('w', encoding='utf-8') as f:
+        f.write(json.dumps(json_data, indent=2))
+        f.close()
+    with out_json.open('r', encoding='utf-8') as f:
+        lines = f.readlines()
+    with out_json.open('w', encoding='utf-8') as f:
+        for line in lines:
+            f.write(re.sub(r'index', 'Challenge', line))
+        f.close()
+
+    with out_json.open('r', encoding='utf-8') as f:
+        json_data = json.load(f)
+        build_dir = "LEFT_TO_RIGHT"
+        table_attr = {"style" : "width:100%", "class" : "table table-striped"}
+        html = convert(json_data, build_direction=build_dir,table_attributes=table_attr)
+
+        with open(f'./{seal}_status.html', "w") as ht:
+            ht.write(html)
+
+if __name__ == '__main__': 
     repo_dir = Path(__file__).parent
     cfg_file = Path('./config')
     if not cfg_file.exists():
@@ -229,20 +266,37 @@ if __name__ == '__main__':
         exit()
     browser = webdriver.Firefox(
         service=FirefoxService(GeckoDriverManager().install()),
-
-        options=BROWSER_OPTS,
-        service_log_path=(repo_dir / 'geckodriver' / 'geckodriver.log')
+        options=BROWSER_OPTS
     )
-    print(f"Using Firefox v{browser.capabilities.get('browserVersion')} and geckodriver v{browser.capabilities.get('moz:geckodriverVersion')}")
+    
+    if not args.quiet:
+        print(f"Using Firefox v{browser.capabilities.get('browserVersion')} and geckodriver v{browser.capabilities.get('moz:geckodriverVersion')}")
+    
+    # cleanup before we crap up
+    os.remove("geckodriver.log")
+    open("geckodriver.log", "x")
+
     for seal in sorted(set([line[0] for line in lines])):
-        print('Scraping data for seal: %s' % seal)
+        if not args.quiet:
+            print('Scraping data for seal: %s' % seal)
         seal_lines = [line for line in lines if line[0] == seal]
         seal_dict = {}
         for line in seal_lines:
-            print(line[1], end=' ', flush=True)
+            if not args.quiet:
+                print(line[1], end=' ', flush=True)
             seal_dict.update(get_data_for_player(browser, *line))
-        print('')
+        if not args.quiet:
+            print('')
         df = json_to_df(seal_dict, seal)
-        df_to_csv(df, seal)
-        #df_to_csv_pretty(df, seal)
+        if args.jsonout:
+            jsonformat = json_to_df(seal_dict, seal).to_json(orient='table')
+            json_write(jsonformat, seal)
+        elif args.htmlout:
+            jsonformat = json_to_df(seal_dict, seal).to_json(orient='table')
+            html_write(jsonformat, seal)
+        else:
+            df_to_csv(df, seal)
+        
     browser.close()
+
+

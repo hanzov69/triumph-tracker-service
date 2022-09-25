@@ -1,0 +1,100 @@
+{
+  "data": [
+    {
+      "Challenge": "Raid: Last Wish",
+      "meaning": "Badge",
+      "hanzov69": false,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "O Murderer Mine",
+      "meaning": "Finish Raid",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Clan Night: Last Wish",
+      "meaning": "Bro-Down",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Habitual Wisher",
+      "meaning": "Wish Wall",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Treasure Trove",
+      "meaning": "Hidden Chests",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Put a Flag on It",
+      "meaning": "Plant Flags",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Petra's Run",
+      "meaning": "Nope",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Thunderstruck",
+      "meaning": "All Arc",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Night Owl",
+      "meaning": "All Void",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Sunburn",
+      "meaning": "All Solar",
+      "hanzov69": true,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "The New Meta",
+      "meaning": "Same Class",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Summoning Ritual",
+      "meaning": "Kali Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Coliseum Champion",
+      "meaning": "Shuro Chi Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Forever Fight",
+      "meaning": "Morgeth Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Keep Out",
+      "meaning": "Vault Challenge",
+      "hanzov69": true,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Strength of Memory",
+      "meaning": "Riven Challenge",
+      "hanzov69": true,
+      "tamarzan": true
+    }
+  ]
+}

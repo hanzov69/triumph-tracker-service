@@ -1,0 +1,112 @@
+{
+  "data": [
+    {
+      "Challenge": "King's Fall",
+      "meaning": "Finish Raid",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "King's Ransom",
+      "meaning": "One of each Secret Chest",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Court of Jesters",
+      "meaning": "Bro-Down",
+      "hanzov69": true,
+      "tamarzan": true
+    },
+    {
+      "Challenge": "Spark of Defiance",
+      "meaning": "All Arc",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Sunburst",
+      "meaning": "All Solar",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "The Abyssal Society",
+      "meaning": "All Void",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Hive Mind",
+      "meaning": "Same Class",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Controlled Dunks",
+      "meaning": "Opening - swap dunkers",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Overzealous",
+      "meaning": "Totems - only 1 player on plate at a time",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Devious Thievery",
+      "meaning": "Warpiest Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Brand Buster",
+      "meaning": "Warpiest - swap brandkillers",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Gaze Amaze",
+      "meaning": "Golgy Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Taking Turns",
+      "meaning": "Golgy - swap taunters",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Under Construction",
+      "meaning": "Daughters Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Hands Off",
+      "meaning": "Oryx Challenge",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "Overwhelming Power",
+      "meaning": "Oryx - get last stand in 1 round",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "One True King",
+      "meaning": "Finish Master Raid",
+      "hanzov69": false,
+      "tamarzan": false
+    },
+    {
+      "Challenge": "King of Kings",
+      "meaning": "Challenges in Master Mode",
+      "hanzov69": false,
+      "tamarzan": false
+    }
+  ]
+}
