@@ -1,4 +1,5 @@
 FROM python:3-alpine3.16
+LABEL maintainer="hanzo@freezerpants.com"
 
 # update apk repo
 RUN echo "http://dl-4.alpinelinux.org/alpine/v3.16/main" >> /etc/apk/repositories && \
