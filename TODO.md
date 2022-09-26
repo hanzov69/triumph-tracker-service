@@ -29,4 +29,5 @@
 
 ## CI/CD Stuff
 - [x] github actions? _yup, added container builder and registry stuff_
-- [ ] gitops deploys, argo? cron?
+- [x] gitops deploys _used argocd_
+- [ ] argo could benefit from PV/PVC, might be worth moving to hive
