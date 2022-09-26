@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triumph-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: triumph-tracker
+  template:
+    metadata:
+      labels:
+        run: triumph-tracker
+        app: triumph-tracker
+    spec:
+      containers:
+      - name: triumph-tracker
+        image: 'ghcr.io/hanzov69/triumph-tracker:latest'
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: triumph-tracker
+  annotations:
+    metallb.universe.tf/address-pool: default
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: triumph-tracker
+  type: LoadBalancer
+  loadBalancerIP: 192.168.1.109
+  externalTrafficPolicy: Cluster

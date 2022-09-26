@@ -9,14 +9,14 @@
 - [x] output in html (--htmlout or -w)
 - [ ] bunch of file operation stuff that is bad but beyond my skill / patience ATM
 - [ ] might beg for some refactoring from _someone..._
+- [ ] needs CSS / javascript to make pretty
 
 ## Container Stuff
 - [x] Create Container that can run selenium based on https://github.com/m9brady/triumph-tracker
-- [ ] selenium job as cron/timed event
-- [ ] display pretty page with stats from selenium job
+- [x] selenium job as cron/timed event
+- [x] display pretty page with stats from selenium job _(pretty might be a stretch..)_
 - [x] Store container in github registry
 - [ ] stretch: discord shit?
-- [x] cron'd it all up
 - [x] nginx to host local files
 
 ## Infra Stuff
@@ -24,6 +24,8 @@
 
 ## Podspec stuff
 - [ ] add ingress endpoint under earlgreyders.wang for this service
+- [x] quick and dirty nginx proxy pass to get to the endpoint - using metallb with a static address (not good)
+- [x] deploying from github registry
 
 ## CI/CD Stuff
 - [x] github actions? _yup, added container builder and registry stuff_
