@@ -12,9 +12,11 @@ This is relative to the `docker/app` directory. Notice that tag is latest, semve
 ### run
 #### development
 This is for mount your local directory in to `/usr/workspace`, which can be used for development.
+
 Note that `/app` exists separately from this. 
 
 `docker run -it -w /usr/workspace -v ${PWD}:/usr/workspace ghcr.io/hanzov69/triumph-tracker /bin/sh`
+
 `python triumph-tracker.py`
 
 #### local production test
@@ -22,9 +24,13 @@ Note that `/app` exists separately from this.
 
 ## Files in docker/app
 `config` config file for raids/users/urls/etc
+
 `entry.sh` is a basic entrypoint script to run our python app (makes working directory stuff easy)
+
 `requirements.txt` pip requirements
+
 `triumph-cron` the cron job that gets symlinked in to our /etc/crontabs/root
+
 `triumph-tracker.py` the workhorse of the show
 
 ## Files in kube
