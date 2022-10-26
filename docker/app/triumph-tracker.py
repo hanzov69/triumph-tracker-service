@@ -42,7 +42,7 @@ RAID_CSS_SELECTOR_MAP = {
         '.checklist-table'
     ),
     'disciple-slayer': (
-        '#mat-expansion-panel-header-16',
+        '#mat-expansion-panel-header-17',
         '.checklist-table'
     ),
     'kingslayer': (
