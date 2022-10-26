@@ -3,3 +3,6 @@ geckodriver.log
 *_status.html
 *.json
 *.pat
+.devcontainer/
+testing/
+
