@@ -1,302 +1,132 @@
-# builtin
-import re
-import os
-import logging
 import json
-from datetime import datetime
-from io import StringIO
-from json import dumps
+import logging
+from os import getenv
 from pathlib import Path
-from json2table import *
 
+import aiobungie
 
-# third-party
-import lxml.etree as ET
-import pandas as pd
-import argparse
-
-pd.set_option('display.max_columns', 10)
-pd.set_option('display.width', 200)
-from selenium import webdriver
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-j', '--jsonout', action='store_true', help="instead of creating csv's, create .json files instead")
-parser.add_argument('-q', '--quiet', action='store_true', help="suppresses normal output, useful for scripting/services" )
-parser.add_argument('-w', '--htmlout', action='store_true', help="instead of creating csv's, create .html instead" )
-args = parser.parse_args()
-
-os.environ['WDM_LOG'] = str(logging.NOTSET)
-TIMEOUT_DELAYS = 45 # seconds
-BROWSER_OPTS = webdriver.FirefoxOptions()
-BROWSER_OPTS.add_argument("--headless")
-BROWSER_OPTS.add_argument("--disable-gpu")
-BROWSER_OPTS.add_argument("--no-sandbox")
-RAID_CSS_SELECTOR_MAP = {
-    'rivensbane': (
-        '#mat-expansion-panel-header-0', # apparently d2checklist does numerical-codes for seals so this will have to update if any layout changes occur
-        '.checklist-table'
-    ),
-    'disciple-slayer': (
-        '#mat-expansion-panel-header-17',
-        '.checklist-table'
-    ),
-    'kingslayer': (
-        '#mat-expansion-panel-header-22',
-        '.checklist-table'
-    )
-}
-GREYDERS_TRANSLATE = {
-    'rivensbane': pd.DataFrame(
-        data={
-            'meaning': [
-                'Badge', 'Finish Raid', 'Bro-Down', 'Wish Wall', 'Hidden Chests',
-                'Plant Flags', 'Nope', 'All Arc', 'All Void', 'All Solar',
-                'Same Class', 'Kali Challenge', 'Shuro Chi Challenge', 'Morgeth Challenge',
-                'Vault Challenge', 'Riven Challenge'
-            ]
-        },
-        # this is where we can force a sorting if we want
-        index=pd.Index(
-            data=[
-                'Raid: Last Wish', 'O Murderer Mine', 'Clan Night: Last Wish',
-                'Habitual Wisher', 'Treasure Trove', 'Put a Flag on It', "Petra's Run",
-                'Thunderstruck', 'Night Owl', 'Sunburn', 'The New Meta',
-                'Summoning Ritual', 'Coliseum Champion', 'Forever Fight', 'Keep Out',
-                'Strength of Memory'
-            ],
-            name='Rivensbane Triumphs'
-       ),
-    ),
-    'disciple-slayer': pd.DataFrame(
-        data={
-            'meaning': [
-                'Finish Raid', 'Finish Master Raid', 'Bro-Down', 'All Arc', 'All Void',
-                'All Solar', 'Same Class', 'Hidden Chests', 'Acquisition Challenge', 
-                'Let Shieldybois Attack Obelisk', 'Caretaker Challenge', 'Everyone stun each floor',
-                'Exhibition Challenge', 'Kill Glyphkeeper pair within 5s', 'Rhulk Challenge',
-                'Dunks within 5s', 'Challenges in Master Mode', 'Lore Books', 'Badge'
-            ]
-        },
-        index=pd.Index(
-            data=[
-                'Vow of the Disciple', 'Master Difficulty "Vow of the Disciple"', 'Clan Fieldtrip',
-                'Dark Charge', 'Dark Abyss', 'Dark Flame', 'Together in the Deep', 'Secrets of the Sunken Pyramid',
-                'Swift Destruction', 'On My Go', 'Base Information', 'Handle With Care',
-                'Defenses Down', 'Glyph to Glyph', 'Looping Catalyst', 'Symmetrical Energy',
-                'Pyramid Conqueror', '"Vow of the Disciple" Lore Book Unlocks', 'Raid: Vow of the Disciple'
-            ],
-            name='Disciple-Slayer Triumphs'
-        )
-    ),
-    'kingslayer': pd.DataFrame(
-        data={
-            'meaning': [
-                'Finish Raid', 'One of each Secret Chest', 'Bro-Down', 'All Arc', 'All Solar',
-                'All Void', 'Same Class', 'Opening - swap dunkers', 'Totems Challenge', 
-                'Totems - only 1 player on plate at a time', 'Warpiest Challenge', 'Warpiest - swap brandkillers',
-                'Golgy Challenge', 'Golgy - swap taunters', 'Daughters Challenge',
-                'Daughters - taken player can\'t touch the ground', 'Oryx Challenge', 'Oryx - get last stand in 1 round', 
-                'Finish Master Raid', 'Challenges in Master Mode', 'Badge'
-            ]
-        },
-        index=pd.Index(
-            data=[
-                'King\'s Fall', 'King\'s Ransom', 'Court of Jesters', 'Spark of Defiance', 'Sunburst',
-                'The Abyssal Society', 'Hive Mind', 'Controlled Dunks', 'The Grass is Always Greener',
-                'Overzealous', 'Devious Thievery', 'Brand Buster', 'Gaze Amaze', 'Taking Turns',
-                'Under Construction', 'The Floor is Lava', 'Hands Off', 'Overwhelming Power',
-                'One True King', 'King of Kings', 'Raid: King\'s Fall'
-            ],
-            name='Kingslayer Triumphs'
-        )
-    )
+logging.basicConfig(
+    format='{asctime} | {name} | {levelname} | {message}',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    style='{',
+    level=logging.INFO
+)
+LOGGER = logging.getLogger('triumph-tracker')
+# these are how the manifest labels them, not the rewarded titles
+WANTED_SEALS = [
+    'King\'s Fall',
+#    'Last Wish',
+#    'Vow of the Disciple'
+]
+# Label, (Bungie Name, Bungie Code)
+PLAYERS = {
+    'Felix': ('Felix', 3964),
+    'Hanzo': ('MrChristian', 4697),
+    'Chuck': ('Chuckm', 8947),
+    'Zrg': ('Spaceballs: The Username', 5169),
+    'Tam': ('Tamarzan', 6907),
+    'Maha': ('Maharunn', 5435),
+    'Polaris': ('Polaris', 7833),
+    'Roland': ('Rolandgunslingr', 8593),
 }
 
-def get_data_for_player(browser, seal, player_name, url):
-    seal_selector, table_selector = RAID_CSS_SELECTOR_MAP.get(seal, (-1, -1))
-    if seal_selector == -1:
-        raise NotImplementedError('No CSS selector defined for seal: %s' % seal)
-    browser.get(url)
-    # need to click the seal to get the triumph table
-    WebDriverWait(browser, TIMEOUT_DELAYS).until(
-         EC.element_to_be_clickable((By.CSS_SELECTOR, seal_selector))
-    )
-    wait = WebDriverWait(browser, timeout=40, poll_frequency=1)
-    element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, seal_selector)))
+MANIFEST_DATA = Path(__file__).parent / 'manifest.json'
+OUT_JSON = Path(__file__).parent / 'clan_data.json'
+AIO_CLIENT = aiobungie.Client(getenv('API_KEY'))
 
-    button = browser.find_element(By.CSS_SELECTOR, seal_selector)
-    button.click()
-    # get triumph table for wanted seal
-    WebDriverWait(browser, TIMEOUT_DELAYS).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, table_selector))
-    )
-    table = browser.find_element(By.CSS_SELECTOR, table_selector)
-    html = table.get_attribute('innerHTML')
-    # this is janky but works for rivensbane - the triumph text label is not stored in a conventional element
-    label_end_matches = list(re.finditer(' <!----><!----><fa-icon _ngcontent-', html))
-    labels = [html[match.start()-40:match.start()].split('> ')[-1].strip() for match in label_end_matches]
-    parser = ET.HTMLParser()
-    root = ET.fromstring(html, parser)
-    triumphs = root.xpath('/html/body/tbody/tr')
-    # check indicates that the triumph is complete
-    is_ticked = [
-        True if triumph.xpath('.//fa-icon')[0].xpath('.//svg')[0].attrib.get('class') == 'svg-inline--fa fa-square-check' else False
-        for triumph in triumphs
-    ]
-    data = {
-        player_name: {
-            triumph: finished
-            for triumph, finished in zip(labels, is_ticked)
-        }
-    }
+def load_manifest():
+    '''does 1 thing'''
+    with MANIFEST_DATA.open() as f:
+        data = json.load(f)
     return data
 
-def json_to_df(data, seal):
-    '''
-    Convert player data nested dict containing triumph labels into dataframe with greyder-compatible labels
-    '''
-    translator = GREYDERS_TRANSLATE.get(seal)
-    if not isinstance(translator, pd.DataFrame):
-        raise NotImplementedError('No Greyders translation for seal: %s' % seal)
-    df = pd.merge(
-        translator,
-        pd.read_json(StringIO(dumps(data))),
-        left_index=True,
-        right_index=True
-    )
-    return df
-
-def df_to_csv(df, seal):
-    '''
-    Output only the not-completed-by-everyone triumphs for the given seal
-    '''
-    out_csv = Path(f'./{seal}_status_new.csv')
-    if not out_csv.parent.exists():
-        out_csv.parent.mkdir()
-    if out_csv.exists():
-        out_csv.unlink()
-    # only keep the triumphs we still need to get
-    remaining = df.loc[~df[df.columns[1:]].all(axis=1)].copy()
-    # ensure common column width for later whitespace-diffing
-    remaining.index = remaining.index.str.pad(
-        df.index.str.len().max(), # use the max-possible index value length
-        side='right'
-    )
-    remaining['meaning'] = remaining['meaning'].str.pad(
-        df['meaning'].str.len().max(), # use the max-possible meaning value length
-        side='left'
-    )
-    with out_csv.open('w', encoding='utf-8') as f:
-        f.write(str(remaining))
-
-def compararator():
-    '''
-    Not used currently, still thinking about it
-    '''
-    raidnames = ["kingslayer", "rivensbane", "disciple-slayer"]
-    for x in raidnames:
-        f1 = f"{x}_status_latest.csv"
-        f2 = f"{x}_status_new.csv"
-        if os.path.exists(f2):
-            try:
-                filecmp.clear_cache()
-                result = filecmp.cmp(f1, f2, shallow=False)
-                if result == 0:
-                    os.rename(f2, f1)
-            except FileNotFoundError:
-                os.rename(f2, f1)
-
-def json_write(jsonformat, seal):
-    '''
-    This will write out a json representation of the dataframe, pay attention to orient
-    '''
-    out_json = Path(f'./{seal}_status_new.json')
-    with out_json.open('w', encoding='utf-8') as f:
-        f.write(str(jsonformat))
-
-def html_write(htmlform, seal):
-    '''
-    I know these file operations are inefficient/bad, but I'm dumb
-    '''
-    out_json = Path(f'./{seal}_status_new.json')
-    with out_json.open('w', encoding='utf-8') as f:
-        f.write(str(jsonformat))
-        f.close()
-    with out_json.open('r', encoding='utf-8') as f:
-        json_data = json.load(f)
-        if 'schema' in json_data:
-            del json_data['schema']
+def get_raid_hashes(wanted_seals, manifest):
+    '''Uses the manifest to retrieve the item hashes for the seals we want'''
+    raid_hashes = {}
+    seals_item = [
+        item for item in manifest['DestinyPresentationNodeDefinition'].values()
+        if item['displayProperties']['name'] == 'Seals'
+    ]
+    assert len(seals_item) == 1
+    seals_item = seals_item[0]
+    for seal in seals_item['children']['presentationNodes']:
+        nodehash = seal['presentationNodeHash']
+        nodematch = manifest['DestinyPresentationNodeDefinition'].get(str(nodehash))
+        if nodematch['displayProperties']['name'] in wanted_seals:
+            raid_hashes.update({
+                nodematch['displayProperties']['name']: {
+                    'records': {
+                        record['recordHash']: (
+                            manifest['DestinyRecordDefinition'].get(
+                                str(record['recordHash'])
+                            )['displayProperties']['name'],
+                            manifest['DestinyRecordDefinition'].get(
+                                str(record['recordHash'])
+                            )['displayProperties']['description']
+                        )
+                        for record in nodematch['children']['records']
+                    },
+                    'title': manifest['DestinyRecordDefinition'].get(
+                        str(nodematch['completionRecordHash'])
+                    )['titleInfo']['titlesByGender']
+                }
+            })
+    return raid_hashes
     
-    with out_json.open('w', encoding='utf-8') as f:
-        f.write(json.dumps(json_data, indent=2))
-        f.close()
-    with out_json.open('r', encoding='utf-8') as f:
-        lines = f.readlines()
-    with out_json.open('w', encoding='utf-8') as f:
-        for line in lines:
-            f.write(re.sub(r'index', 'Challenge', line))
-        f.close()
+async def get_player_completion(bungie_name, bungie_code, raid_hashes, manifest):
+    '''Uses the item hashes with player data to get completion information'''
+    async with AIO_CLIENT.rest:
+        # identify the main membershiptype (i.e. the one you picked during cross-save setup)
+        profiles = await AIO_CLIENT.fetch_player(bungie_name, bungie_code)
+        main_membershiptype = list(set([f.crossave_override for f in profiles])).pop()
+        # get the actual profile that bungie-api will be happy to work with
+        main_profile = await AIO_CLIENT.fetch_player(bungie_name, bungie_code, main_membershiptype)
+        profile_id = main_profile.pop()
+        profile = await profile_id.fetch_self_profile([aiobungie.ComponentType.RECORDS])
+    player_data = {}
+    for raid, hashmap in raid_hashes.items():
+        player_data.update({
+            raid: {
+                'title': hashmap['title'],
+                'triumphs': {}
+            }
+        })
+        for key, (triumph, description) in hashmap['records'].items():
+            # add Raid: prefix for King's Fall due to Dennis labelling 2 triumphs the same
+            if raid == 'King\'s Fall' and 'Trophies' in description:
+                triumph = f'Raid: {triumph}'
+            record = profile.profile_records.get(key)
+            objective_list = record.objectives if record.objectives is not None else record.interval_objectives
+            objective_data = [
+                (
+                    description,
+                    manifest['DestinyObjectiveDefinition'].get(str(objective.hash))['progressDescription'],
+                    objective.complete
+                )
+                for objective in objective_list
+            ]
+            player_data[raid]['triumphs'].update({
+                triumph: objective_data
+            })
+    return {bungie_name: player_data}
 
-    with out_json.open('r', encoding='utf-8') as f:
-        json_data = json.load(f)
-        build_dir = "LEFT_TO_RIGHT"
-        table_attr = {"style" : "width:100%", "class" : "table table-striped"}
-        html = convert(json_data, build_direction=build_dir,table_attributes=table_attr)
+async def main():
+    '''main loop'''
+    manifest = load_manifest()
+    hashes = get_raid_hashes(WANTED_SEALS, manifest)
+    clan_data = {}
+    # TODO:make this parallel somehow
+    for player, (bungie_name, bungie_id) in PLAYERS.items():
+        LOGGER.info('Pulling data for %s' % player)
+        try:
+            player_data = await get_player_completion(bungie_name, bungie_id, hashes, manifest)
+        except Exception as e:
+            print(e)
+            continue
+        clan_data[player] = player_data[bungie_name]
+    with OUT_JSON.open('w') as f:
+        f.write(json.dumps(clan_data, indent=2))
+    LOGGER.info('Dumped to %s' % OUT_JSON)
 
-        with open(f'./{seal}_status.html', "w") as ht:
-            ht.write(html)
-
-if __name__ == '__main__': 
-    repo_dir = Path(__file__).parent
-    cfg_file = Path('./config')
-    if not cfg_file.exists():
-        raise FileNotFoundError('Cannot find .config - use the template to make your own')
-    with cfg_file.open() as f:
-        lines = [
-            line.strip().split(',') for line in f.readlines()
-            if not line.startswith('#') and not len(line) < 10
-        ]
-    if len(lines) == 0:
-        print('No lines to process in config')
-        exit()
-    browser = webdriver.Firefox(
-        service=FirefoxService(GeckoDriverManager().install()),
-        options=BROWSER_OPTS
-    )
-    
-    if not args.quiet:
-        print(f"Using Firefox v{browser.capabilities.get('browserVersion')} and geckodriver v{browser.capabilities.get('moz:geckodriverVersion')}")
-    
-    # cleanup before we crap up
-    os.remove("geckodriver.log")
-    open("geckodriver.log", "x")
-
-    for seal in sorted(set([line[0] for line in lines])):
-        if not args.quiet:
-            print('Scraping data for seal: %s' % seal)
-        seal_lines = [line for line in lines if line[0] == seal]
-        seal_dict = {}
-        for line in seal_lines:
-            if not args.quiet:
-                print(line[1], end=' ', flush=True)
-            seal_dict.update(get_data_for_player(browser, *line))
-        if not args.quiet:
-            print('')
-        df = json_to_df(seal_dict, seal)
-        if args.jsonout:
-            jsonformat = json_to_df(seal_dict, seal).to_json(orient='table')
-            json_write(jsonformat, seal)
-        elif args.htmlout:
-            jsonformat = json_to_df(seal_dict, seal).to_json(orient='table')
-            html_write(jsonformat, seal)
-        else:
-            df_to_csv(df, seal)
-        
-    browser.close()
-
-
+if __name__ == '__main__':
+    AIO_CLIENT.run(main())
