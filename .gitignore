@@ -164,6 +164,7 @@ geckodriver.log
 *.txt
 *_status.html
 *.json
+*.sqlite3
 *.pat
 .devcontainer/
 testing/

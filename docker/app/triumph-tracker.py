@@ -29,7 +29,6 @@ PLAYERS = {
     'Polaris': ('Polaris', 7833),
     'Roland': ('Rolandgunslingr', 8593),
 }
-
 MANIFEST_DATA = Path(__file__).parent / 'manifest.json'
 OUT_JSON = Path(__file__).parent / 'clan_data.json'
 AIO_CLIENT = aiobungie.Client(getenv('API_KEY'))
