@@ -1,7 +1,7 @@
 import json
 import logging
 import sqlite3
-from os import getenv
+from os import environ
 from pathlib import Path
 
 import aiobungie
@@ -32,7 +32,7 @@ PLAYERS = {
 }
 MANIFEST_DATA = Path(__file__).parent / 'manifest.sqlite3'
 OUT_JSON = Path(__file__).parent / 'clan_data.json'
-AIO_CLIENT = aiobungie.Client(getenv('API_KEY'))
+AIO_CLIENT = aiobungie.Client(environ['API_KEY'])
 
 
 def get_raid_hashes(wanted_seals, cursor):

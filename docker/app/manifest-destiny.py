@@ -1,5 +1,5 @@
 import logging
-from os import getenv
+from os import environ
 from pathlib import Path
 
 import aiobungie
@@ -13,7 +13,7 @@ logging.basicConfig(
 
 MANIFEST_DATA = Path(__file__).parent / 'manifest.sqlite3'
 MANIFEST_VERSION = Path(__file__).parent / 'version.txt'
-AIO_CLIENT = aiobungie.Client(getenv('API_KEY'))
+AIO_CLIENT = aiobungie.Client(environ['API_KEY'])
 
 async def check_manifest():
     '''Handles the manifest data'''
