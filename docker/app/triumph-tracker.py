@@ -1,8 +1,8 @@
 import json
 import logging
 import sqlite3
-from os import environ
 from pathlib import Path
+from subprocess import check_output
 
 import aiobungie
 
@@ -32,7 +32,10 @@ PLAYERS = {
 }
 MANIFEST_DATA = Path(__file__).parent / 'manifest.sqlite3'
 OUT_JSON = Path(__file__).parent / 'clan_data.json'
-AIO_CLIENT = aiobungie.Client(environ['API_KEY'])
+api_key = check_output('echo $API_KEY', shell=True).decode('utf-8').strip()
+if api_key == '':
+    raise KeyError("Cannot find env var: 'API_KEY'")
+AIO_CLIENT = aiobungie.Client(api_key)
 
 
 def get_raid_hashes(wanted_seals, cursor):

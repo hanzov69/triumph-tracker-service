@@ -1,6 +1,6 @@
 import logging
-from os import environ
 from pathlib import Path
+from subprocess import check_output
 
 import aiobungie
 
@@ -13,7 +13,10 @@ logging.basicConfig(
 
 MANIFEST_DATA = Path(__file__).parent / 'manifest.sqlite3'
 MANIFEST_VERSION = Path(__file__).parent / 'version.txt'
-AIO_CLIENT = aiobungie.Client(environ['API_KEY'])
+api_key = check_output('echo $API_KEY', shell=True).decode('utf-8').strip()
+if api_key == '':
+    raise KeyError("Cannot find env var: 'API_KEY'")
+AIO_CLIENT = aiobungie.Client(api_key)
 
 async def check_manifest():
     '''Handles the manifest data'''
