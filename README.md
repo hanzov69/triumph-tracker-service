@@ -2,9 +2,18 @@
 
 This branch isn't quite ready for prime time. 
 
-To run/test this on your local environment, the easiest way is with vscode. Launch vscode and re-open in remote.
+# warnings
+Currently, the manifest and clan_data are manually triggered. This will change soon.
 
-Otherwise, you should be able to get it running with .devcontainer/Dockerfile
+# local docker
+This is local, without vscode, ready to serve.
+- `docker build -t ghcr.io/hanzov69/triumph-tracker:aiotest .`
+- `docker run -p 8000:8000 ghcr.io/hanzov69/triumph-tracker:aiotest`
+- open `http://127.0.0.1:8000`
+- exec in to container, set API_KEY env, update manifest/clan_data
+
+# devel docker
+To run/test this on your local environment, the easiest way is with vscode. Launch vscode and re-open in remote.
 
 Once in the container, 
 - `cd /docker/app/`

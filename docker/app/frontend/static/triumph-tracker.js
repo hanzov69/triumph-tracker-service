@@ -35,8 +35,19 @@ function getComplete(elementid, playerid, cheevoid) {
          url: "/_is_complete",
          data: {playerid, cheevoid},
          success: function(response) {
-               document.getElementById(elementid).innerHTML = response;   
+               document.getElementById(elementid).innerHTML = response;
+               if (response == "Done"){
+                  $('#row' +cheevoid).attr( 'hideable','true');
+               } else {
+                  $('#row' +cheevoid).attr( 'hideable','false');
+               }
          }
       }
-   );     
+   );
+   
 }
+
+function hideRows() {
+   $('[hideable="true"]').toggle(); 
+}
+

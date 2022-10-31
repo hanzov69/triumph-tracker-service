@@ -2,6 +2,8 @@
 
 {% block content %}
     <h1>{% block title %} {{ raid_name.name }} {% endblock %}</h1>
+    <button onclick="hideRows()">Show / Hide Completed</button>
+
     <table class="GeneratedTable">
         <thead>
             <tr>
@@ -13,7 +15,7 @@
         </thead>
         <tbody>
             {% for cheevo in cheevos %}
-                <tr>
+                <tr id="row{{ cheevo['id'] }}" hideable="false">
                     <td name="cheevodesc" title='Please wait...' cheevo-descid="{{ cheevo['id'] }}" id="{{ cheevo['id'] }}">{{ cheevo['name'] }}</td>
                     {% set count = [] %}
                     {% for player in players %} 

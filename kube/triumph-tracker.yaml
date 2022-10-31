@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
       - name: triumph-tracker
-        image: 'ghcr.io/hanzov69/triumph-tracker:latest'
+        image: 'ghcr.io/hanzov69/triumph-tracker:aiotest'
         ports:
         - name: http
-          containerPort: 80
+          containerPort: 8000
           protocol: TCP
       imagePullSecrets:
       - name: dockerconfigjson-github-com
@@ -32,8 +32,8 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 8088
-    targetPort: 80
+    port: 8000
+    targetPort: 8000
   selector:
     app: triumph-tracker
   type: LoadBalancer
