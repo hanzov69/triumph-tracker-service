@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} {{ raid_name.name }} {% endblock %}</h1>
+    <table class="GeneratedTable">
+        <thead>
+            <tr>
+            <th>Achievement</th>
+            {% for player in players %}
+                <th>{{ player['bungie_name'] }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for cheevo in cheevos %}
+                <tr>
+                    <td name="cheevodesc" title='Please wait...' cheevo-descid="{{ cheevo['id'] }}" id="{{ cheevo['id'] }}">{{ cheevo['name'] }}</td>
+                    {% set count = [] %}
+                    {% for player in players %} 
+                        {% set __ = count.append(1) %}                        
+                        <td><span id="{{ cheevo['id'] }}{{ count|length }}"><script>getComplete('{{ cheevo['id'] }}{{ count|length }}', '{{ player['id'] }}', '{{ cheevo['id'] }}')</script> </span></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+{% endblock %}

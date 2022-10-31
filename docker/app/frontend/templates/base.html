@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}- EarlGreyders Triumph Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'triumph-tracker.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="{{ url_for('static', filename='triumph-tracker.js') }}"></script>
+
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">EarlGreyders Triumph Tracker</a>
+        <a href="#">About</a>
+    </nav>
+    <hr>
+    <div class="content">
+        {% block content %} {% endblock %}
+    </div>
+</body>
+</html>

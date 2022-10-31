@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Raids {% endblock %}</h1>
+    {% for raid in raids %}
+        <div class='raid'>
+            <p>
+                {{ raid['name'] }} - <a href="/raid/{{ raid['id'] }}">{{ raid['seal'] }}</a>
+            </p>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,37 +1,26 @@
-[![Deploy triumph-tracker Container](https://github.com/hanzov69/triumph-tracker-service/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/hanzov69/triumph-tracker-service/actions/workflows/docker-image.yml)
+# triumph-tracker-service (less stable)
 
-# triumph-tracker-service
-Repo for a container based triumph-tracker for web thangs
+This branch isn't quite ready for prime time. 
 
-## docker
-### build
-This is relative to the `docker/app` directory. Notice that tag is latest, semver can (should?) be used
+To run/test this on your local environment, the easiest way is with vscode. Launch vscode and re-open in remote.
 
-`docker build -t ghcr.io/hanzov69/triumph-tracker:latest .`
+Otherwise, you should be able to get it running with .devcontainer/Dockerfile
 
-### run
-#### development
-This is for mount your local directory in to `/usr/workspace`, which can be used for development.
+Once in the container, 
+- `cd /docker/app/`
+- `pip3 install -r requirements.txt`
+- `cd /docker/app/backend`
+- `python manifest-destiny.py` this will grab the latest Bungie manifest
+- `python triumph-tracker.py` this will build the clan_data.sqlite3 db
+- `cd /docker/app/frontend/`
+- `flask run` This will start the app on `http://127.0.0.1:5000`
 
-Note that `/app` exists separately from this. 
+## ToDo - General
+- need to update `Dockerfile`
+- probably freshen up .gitignore
 
-`docker run -it -w /usr/workspace -v ${PWD}:/usr/workspace ghcr.io/hanzov69/triumph-tracker /bin/sh`
-
-`python triumph-tracker.py`
-
-#### local production test
-`docker run -d -p 80:80 ghcr.io/hanzov69/triumph-tracker:latest`
-
-## Files in docker/app
-`config` config file for raids/users/urls/etc
-
-`entry.sh` is a basic entrypoint script to run our python app (makes working directory stuff easy)
-
-`requirements.txt` pip requirements
-
-`triumph-cron` the cron job that gets symlinked in to our /etc/crontabs/root
-
-`triumph-tracker.py` the workhorse of the show
-
-## Files in kube
-TBD
+## ToDo - Frontend
+- Create `About` route, show credits, version, manifest/clan_data freshness
+- Lots of CSS work
+- Better javascript, allow filtering, hiding complete, whatnot
+- Frontend refresh stale backend data? (better than cron)
