@@ -2,9 +2,18 @@
 
 {% block content %}
     <h1>{% block title %} {{ raid_name.name }} {% endblock %}</h1>
-    <button onclick="hideRows()">Show / Hide Completed</button>
+    Hide Completed&nbsp;
+    <label class="switch">
+        <input type="checkbox" id="hiderowcheck">
+        <span class="slider round"></span>
+    </label>
+    Highlight&nbsp;
+    <label class="switch">
+        <input type="checkbox" id="highlighter">
+        <span class="slider round"></span>
+    </label>
 
-    <table class="GeneratedTable">
+    <table id="GeneratedTable" class="GeneratedTable">
         <thead>
             <tr>
             <th>Achievement</th>
@@ -15,7 +24,7 @@
         </thead>
         <tbody>
             {% for cheevo in cheevos %}
-                <tr id="row{{ cheevo['id'] }}" hideable="false">
+                <tr name="cheevorow" id="row{{ cheevo['id'] }}" hideable="false">
                     <td name="cheevodesc" title='Please wait...' cheevo-descid="{{ cheevo['id'] }}" id="{{ cheevo['id'] }}">{{ cheevo['name'] }}</td>
                     {% set count = [] %}
                     {% for player in players %} 

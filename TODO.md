@@ -8,8 +8,8 @@
 - [ ] needs CSS / javascript to make pretty
 - [ ] give some CRUD to frontend to allow adding/removing `players`
 - [ ] use cache for values to hide ajax slowness?
-- [ ] row highlight on mouseover for readability
-- [ ] toggle cell highlighting for incomplete
+- [x] row highlight on mouseover for readability
+- [x] toggle cell highlighting for incomplete
 
 ## Backend
 - [ ] read in `players` from DB versus hardcode

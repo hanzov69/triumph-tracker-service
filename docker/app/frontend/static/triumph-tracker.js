@@ -1,28 +1,60 @@
 $(document).ready(function(){
-    //  tooltip
-    $( '.content td[name="cheevodesc"]' ).tooltip({
-       track:true,
-       open: function( event, ui ) {
-          var cheevodescid = $(this).attr('cheevo-descid');
-          $.ajax({
-              url:'/_cheevo_desc',
-              type:'post',
-              data:{cheevodescid},
-              success: function(response){
-                 $("#"+cheevodescid).tooltip('option','content',response);
-              }
-          });
-       }
-    });
-  
-    $('.content td[name="cheevodesc"]').mouseout(function(){
-       // re-initializing tooltip
-       $(this).attr('title','Please wait...');
-       $(this).tooltip();
-       $('.ui-tooltip').hide();
-    });
+   // hide completed rows
+   $('#hiderowcheck').click(function() {
+      $('[hideable="true"]').toggle(); 
+   });
 
-    $.ajax(
+   // highlight cells
+   $('#highlighter').click(function() {
+      if($('#highlighter').is(':checked')){
+         $("#GeneratedTable td").each(function() {
+            if ($(this).text() == 'Incomplete'){
+               $(this).css('background-color', 'red');
+            }
+            if ($(this).text() == 'Done'){
+               $(this).css('background-color', 'green');
+            }
+         }); 
+      } else {
+         $("#GeneratedTable td").each(function() {
+            $(this).css('background-color', '');
+         }); 
+      }
+   });
+   
+   // highlight row on hover
+   $('.content tr[name="cheevorow"]').mouseover(function(){
+      $(this).addClass('highlight');
+   });
+        
+   $('.content tr[name="cheevorow"]').mouseout(function(){
+      $(this).removeClass('highlight');
+   });
+
+   //  tooltip
+   $( '.content td[name="cheevodesc"]' ).tooltip({
+      track:true,
+      open: function( event, ui ) {
+         var cheevodescid = $(this).attr('cheevo-descid');
+         $.ajax({
+            url:'/_cheevo_desc',
+            type:'post',
+            data:{cheevodescid},
+            success: function(response){
+               $("#"+cheevodescid).tooltip('option','content',response);
+            }
+         });
+      }
+   });
+  
+   $('.content td[name="cheevodesc"]').mouseout(function(){
+      // re-initializing tooltip
+      $(this).attr('title','Please wait...');
+      $(this).tooltip();
+      $('.ui-tooltip').hide();
+   });
+
+   $.ajax(
       // get manifest version
       {
          type: "POST",
@@ -82,11 +114,6 @@ function getComplete(elementid, playerid, cheevoid) {
    );
 }
 
-function hideRows() {
-   // simple js toggle to hide rows
-   $('[hideable="true"]').toggle(); 
-}
-
 function getAbout() {
    // set up the about dialog
    $( "#about" ).dialog({
@@ -99,4 +126,4 @@ function getAbout() {
          }
       }
    });
- }
+}
