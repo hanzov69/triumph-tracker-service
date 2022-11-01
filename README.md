@@ -31,4 +31,4 @@ This is local, without vscode, ready to serve.
 - this will create the secret and expose it as a env var
 
 ## Todo Items
-- Keeping this in [TODO.md](TODO.md)
+- Moved everything off to [Issues](https://github.com/hanzov69/triumph-tracker-service/issues)
