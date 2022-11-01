@@ -13,23 +13,22 @@ This is local, without vscode, ready to serve.
 - exec in to container, set API_KEY env, update manifest/clan_data
 
 # devel docker
-To run/test this on your local environment, the easiest way is with vscode. Launch vscode and re-open in remote.
+- To run/test this on your local environment, the easiest way is with vscode. Launch vscode and re-open in remote.
+- Devcontainer will install requirements.txt automagically, but if this changes you may need to rebuild the container
+- This includes node v18 and the live-css-editor server
+- once launched, in terminal run `API_KEY="yourbungieykey" && export API_KEY`
+- build manifest and player data
+- - `cd ~/docker/app/backend`
+- - `python manifest-destiny.py` this will grab the latest Bungie manifest
+- - `python triumph-tracker.py` this will build the clan_data.sqlite3 db
+- from `~/docker/app/frontend` run `flask run` This will start the app on `http://127.0.0.1:5000`
+- For CSS editing in live, launch second terminal, go to `./docker/app/frontend/static` and run `live-css`
+- - on browser side, make sure you have [live-css extension](https://chrome.google.com/webstore/detail/live-editor-for-css-less/ifhikkcafabcgolfjegfcgloomalapol)
+- - on localhost page, launch extension, click "file" select `triumph-tracker.css` and you can live edit
 
-Once in the container, 
-- `cd /docker/app/`
-- `pip3 install -r requirements.txt`
-- `cd /docker/app/backend`
-- `python manifest-destiny.py` this will grab the latest Bungie manifest
-- `python triumph-tracker.py` this will build the clan_data.sqlite3 db
-- `cd /docker/app/frontend/`
-- `flask run` This will start the app on `http://127.0.0.1:5000`
+# kube/argo
+- make sure to define API_KEY correctly in the Secret yaml (will change in the future to do a value subst in argo)
+- this will create the secret and expose it as a env var
 
-## ToDo - General
-- need to update `Dockerfile`
-- probably freshen up .gitignore
-
-## ToDo - Frontend
-- Create `About` route, show credits, version, manifest/clan_data freshness
-- Lots of CSS work
-- Better javascript, allow filtering, hiding complete, whatnot
-- Frontend refresh stale backend data? (better than cron)
+## Todo Items
+- Keeping this in [TODO.md](TODO.md)

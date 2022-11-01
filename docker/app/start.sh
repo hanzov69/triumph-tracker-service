@@ -4,7 +4,6 @@ cd /app/frontend/
 # If there's a prestart.sh script in the /app directory, run it before starting
 PRE_START_PATH=/app/prestart.sh
 echo "Checking for script in $PRE_START_PATH"
-echo "APP_MODULE is: "$APP_MODULE
 if [ -f $PRE_START_PATH ] ; then
     echo "Running script $PRE_START_PATH"
     . "$PRE_START_PATH"

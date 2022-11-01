@@ -13,13 +13,19 @@ spec:
         run: triumph-tracker
         app: triumph-tracker
     spec:
-      containers:
+      containers:      
       - name: triumph-tracker
         image: 'ghcr.io/hanzov69/triumph-tracker:aiotest'
         ports:
         - name: http
           containerPort: 8000
           protocol: TCP
+        env:
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bungie-api-key
+              key: API_KEY
       imagePullSecrets:
       - name: dockerconfigjson-github-com
 ---
@@ -39,3 +45,13 @@ spec:
   type: LoadBalancer
   loadBalancerIP: 192.168.1.109
   externalTrafficPolicy: Cluster
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bungie-api-key
+  labels:
+    app: triumph-tracker
+type: Opaque
+stringData:
+    API_KEY: "12345"

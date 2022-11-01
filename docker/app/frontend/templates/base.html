@@ -2,22 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %} {% endblock %}- EarlGreyders Triumph Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename = 'triumph-tracker.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
     <script src="{{ url_for('static', filename='triumph-tracker.js') }}"></script>
+    <script>$("#about").dialog({ autoOpen: false });</script>
 
 </head>
 <body>
     <nav>
         <a href="{{ url_for('index') }}">EarlGreyders Triumph Tracker</a>
-        <a href="#">About</a>
+        <a href="#" onclick="getAbout()">About</a>
     </nav>
     <hr>
     <div class="content">
         {% block content %} {% endblock %}
+    </div>
+    <div id="about" title="About Triumph Tracker" style="display:none">
+        <p> <a href="https://github.com/hanzov69/triumph-tracker-service">GitHub</a><br/><br/>
+            Bungie Manifest Version: <br/>
+            <span id="manifest_version">{{ manifest_version }}</span><br/>
+            Lost Modified<br/><span id="manifest_modified"></span><br/>
+            <br/>
+            Clan Data last updated<br/><span id="clan_data_modified"></span><br/>
+            <br/>
+            Credits
+            <br/>Felix for backend hard stuff. 
+            <br/>MrChristian for other stuff.
+        </p>
     </div>
 </body>
 </html>

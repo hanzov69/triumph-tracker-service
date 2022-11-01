@@ -1,7 +1,10 @@
+import os.path, time
 import sqlite3
 from aiohttp import request
-from flask import Flask, jsonify, render_template, request, url_for
+from flask import Flask, render_template, request
 
+
+    
 app = Flask(__name__)
 
 def get_db_connection():
@@ -36,6 +39,19 @@ def cheevo_desc():
     result = conn.execute('select desc from cheevos where id=%s' % (cheevo_id,)).fetchone()
     conn.close()
     return (result[0])
+
+@app.route('/_manifest_version', methods=['POST'])
+def manifest_version():
+    with open('../version.txt', 'r') as file:
+            manifest_version = file.read().rstrip()
+            file.close()
+    return manifest_version
+
+@app.route('/_modified_time', methods=['POST'])
+def modified_time():
+    filename = request.form.get('filename')
+    modified_stamp = ("%s" % time.ctime(os.path.getmtime('../' + filename)))
+    return modified_stamp
 
 @app.route('/raid/<raid_id>')
 def raid(raid_id):
