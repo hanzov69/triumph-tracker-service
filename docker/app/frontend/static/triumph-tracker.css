@@ -1,8 +1,101 @@
-nav a {
-    color: #828282;
-    font-size: 2em;
-    margin-left: 50px;
-    text-decoration: none;
+body {
+  font-family: Verdana,Arial,sans-serif;
+  background-color: #7e7e7e;
+  margin: 0;
+}
+
+.box {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.box .row {
+}
+
+.box .row.header {
+  flex: 0 1 auto;
+  font-family: "Audiowide", sans-serif;
+}
+
+.box .row.header a {
+  color: #000000;
+  font-size: 2.5em;
+  text-decoration: none;
+}
+
+.box .row.header a:hover {
+  font-size: 2.5em;
+  text-decoration: none;
+  filter: invert(85%) sepia(42%) saturate(841%) hue-rotate(343deg) brightness(101%) contrast(101%);
+}
+
+.box .row.header img {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.box .row.content {
+  flex: 1 1 auto;
+  background-image: url("eg-bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.box .row.raidlist {
+  background-color: rgba(182, 182, 182, 0.9);
+  border-radius: 30px 0px 30px;
+  padding: 20px;
+  outline-style: groove;
+  outline-color: #ffd329;
+  outline-width: thin;
+}
+
+.box .row.footer {
+  flex: 0 1 40px;
+  font-family: "Audiowide", sans-serif;
+}
+
+.box .row.footer a {
+  color: #000000;
+  text-decoration: none;
+  position: absolute;
+  right: 50px;
+}
+
+.box .row.footer a:hover {
+  color: #ffd329;
+  text-decoration: none;
+  position: absolute;
+  right: 50px;
+}
+
+.sealtext {
+  margin: 30px;
+  margin-left: 50px;
+}
+.sealtext a {
+  color: #000000;
+  text-decoration: none;
+  background-color: #ffd329;
+  border-radius: 5px 0px 5px;
+  padding: 10px;
+  outline-style: groove;
+  outline-width: thin;
+}
+
+.sealtext a:hover {
+  color: #ffd329;
+  text-decoration: none;
+  background-color: #7e7e7e;
+  border-radius: 5px 0px 5px;
+  padding: 10px;
+  outline-style: groove;
+  outline-width: thin;
+  outline-color: #000000;
 }
 
 table.GeneratedTable {
@@ -27,7 +120,7 @@ table.GeneratedTable thead {
 }
 
 .highlight {
-  background-color: #d2c322;
+  background-color: #b6b6b6;
 }
 
 /* The switch - the box around the slider */

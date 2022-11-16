@@ -17,7 +17,9 @@ LOGGER = logging.getLogger('triumph-tracker')
 WANTED_SEALS = [
     'King\'s Fall',
     'Last Wish',
-    'Vow of the Disciple'
+    'Vow of the Disciple',
+    'Deep Stone Crypt',
+    'Vault of Glass'
 ]
 MANIFEST_DATA = Path(__file__).parent / '../manifest.sqlite3'
 CLAN_DATA = Path(__file__).parent / '../clan_data.sqlite3'

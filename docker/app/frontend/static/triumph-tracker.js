@@ -9,10 +9,10 @@ $(document).ready(function(){
       if($('#highlighter').is(':checked')){
          $("#GeneratedTable td").each(function() {
             if ($(this).text() == 'Incomplete'){
-               $(this).css('background-color', 'red');
+               $(this).css('background-color', '#ffa7a7');
             }
             if ($(this).text() == 'Done'){
-               $(this).css('background-color', 'green');
+               $(this).css('background-color', '#8eff9f');
             }
          }); 
       } else {

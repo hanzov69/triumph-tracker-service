@@ -7,25 +7,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename = 'triumph-tracker.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
     <script src="{{ url_for('static', filename='triumph-tracker.js') }}"></script>
     <script>$("#about").dialog({ autoOpen: false });</script>
 
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('index') }}">EarlGreyders Triumph Tracker</a>
-        <a href="#" onclick="getAbout()">About</a>
-    </nav>
-    <hr>
-    <div class="content">
-        {% block content %} {% endblock %}
-    </div>
     <div id="about" title="About Triumph Tracker" style="display:none">
         <p> <a href="https://github.com/hanzov69/triumph-tracker-service">GitHub</a><br/><br/>
             Bungie Manifest Version: <br/>
             <span id="manifest_version">{{ manifest_version }}</span><br/>
-            Lost Modified<br/><span id="manifest_modified"></span><br/>
+            Last Modified<br/><span id="manifest_modified"></span><br/>
             <br/>
             Clan Data last updated<br/><span id="clan_data_modified"></span><br/>
             <br/>
@@ -34,5 +27,19 @@
             <br/>MrChristian for other stuff.
         </p>
     </div>
+    <div class="box">
+        <div class="row header">
+            <a href="https://earlgreyders.wang"><img src="{{ url_for('static', filename = 'logo.png') }}"></a>
+            <a href="{{ url_for('index') }}">EARL GREYDERS.RAID</a>
+        </div>
+        <br/>
+        <div class="row content">
+            {% block content %} {% endblock %}
+        </div>
+        <div class="row footer">
+            <a href="#" onclick="getAbout()">ABOUT</a>
+        </div>
+    </div>
+
 </body>
 </html>

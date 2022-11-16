@@ -56,11 +56,11 @@ def modified_time():
 @app.route('/raid/<raid_id>')
 def raid(raid_id):
     conn = get_db_connection()
-    raid_name = conn.execute("select name from raids where id=%s" % (raid_id,)).fetchone()
+    seal_name = conn.execute("select seal from raids where id=%s" % (raid_id,)).fetchone()
     cheevos = conn.execute("select * from cheevos where raid=%s" % (raid_id,)).fetchall()
     players = conn.execute('select * from players').fetchall()
     conn.close()
-    return render_template('raid.html', raid_name=raid_name, cheevos=cheevos, players=players)
+    return render_template('raid.html', seal_name=seal_name, cheevos=cheevos, players=players)
 
 if __name__ == '__main__':
    app.run(debug = True)
