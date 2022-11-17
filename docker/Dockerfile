@@ -22,7 +22,6 @@ COPY app/ /app/
 RUN pip install --upgrade pip
 ENV PYTHONPATH /usr/lib/python3.10/site-packages
 RUN pip install Cython
-RUN pip install tesserocr
 RUN pip install -r ./app/requirements.txt
 
 EXPOSE 8000
