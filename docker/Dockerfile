@@ -19,9 +19,9 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/main" >> /etc/ap
 RUN mkdir -p /app
 COPY app/ /app/
 
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip wheel
 ENV PYTHONPATH /usr/lib/python3.10/site-packages
-RUN pip install Cython
+RUN pip install --upgrade Cython
 RUN pip install -r ./app/requirements.txt
 
 EXPOSE 8000
