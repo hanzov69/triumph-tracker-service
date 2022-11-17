@@ -1,0 +1,187 @@
+body {
+  font-family: Verdana,Arial,sans-serif;
+  background-color: #7e7e7e;
+  margin: 0;
+}
+
+.box {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.box .row {
+}
+
+.box .row.header {
+  flex: 0 1 auto;
+  font-family: "Audiowide", sans-serif;
+}
+
+.box .row.header a {
+  color: #000000;
+  font-size: 2.5em;
+  text-decoration: none;
+}
+
+.box .row.header a:hover {
+  font-size: 2.5em;
+  text-decoration: none;
+  filter: invert(85%) sepia(42%) saturate(841%) hue-rotate(343deg) brightness(101%) contrast(101%);
+}
+
+.box .row.header img {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.box .row.content {
+  flex: 1 1 auto;
+  background-image: url("eg-bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.box .row.raidlist {
+  background-color: rgba(182, 182, 182, 0.9);
+  border-radius: 30px 0px 30px;
+  padding: 20px;
+  outline-style: groove;
+  outline-color: #ffd329;
+  outline-width: thin;
+}
+
+.box .row.footer {
+  flex: 0 1 40px;
+  font-family: "Audiowide", sans-serif;
+}
+
+.box .row.footer a {
+  color: #000000;
+  text-decoration: none;
+  position: absolute;
+  right: 50px;
+}
+
+.box .row.footer a:hover {
+  color: #ffd329;
+  text-decoration: none;
+  position: absolute;
+  right: 50px;
+}
+
+.sealtext {
+  margin: 30px;
+  margin-left: 50px;
+}
+.sealtext a {
+  color: #000000;
+  text-decoration: none;
+  background-color: #ffd329;
+  border-radius: 5px 0px 5px;
+  padding: 10px;
+  outline-style: groove;
+  outline-width: thin;
+}
+
+.sealtext a:hover {
+  color: #ffd329;
+  text-decoration: none;
+  background-color: #7e7e7e;
+  border-radius: 5px 0px 5px;
+  padding: 10px;
+  outline-style: groove;
+  outline-width: thin;
+  outline-color: #000000;
+}
+
+table.GeneratedTable {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  color: #000000;
+}
+
+table.GeneratedTable td, table.GeneratedTable th {
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  padding: 3px;
+}
+
+table.GeneratedTable thead {
+  background-color: #ffcc00;
+}
+
+.highlight {
+  background-color: #b6b6b6;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 16px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #56585a;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #56585a;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 16px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
