@@ -15,9 +15,6 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/main" >> /etc/ap
     echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/community" >> /etc/apk/repositories &&\
     apk update
     
-RUN rm /etc/crontabs/root
-COPY files/triumph-cron /etc/crontabs/root
-
 RUN mkdir -p /app
 COPY app/ /app/
 
