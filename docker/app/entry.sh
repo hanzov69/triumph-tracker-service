@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [ -f /app/frontend/app.py ]; then
     DEFAULT_MODULE_NAME=app
 elif [ -f /app/app.py ]; then

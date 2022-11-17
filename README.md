@@ -1,9 +1,10 @@
-# triumph-tracker-service (less stable)
+[![Deploy triumph-tracker Container](https://github.com/hanzov69/triumph-tracker-service/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/hanzov69/triumph-tracker-service/actions/workflows/docker-image.yml)
 
-This branch isn't quite ready for prime time. 
+# triumph-tracker-service
 
-# warnings
-Currently, the manifest and clan_data are manually triggered. This will change soon.
+# Notes:
+Build fails because of github wheels cache weirdness. Code is working, and `latest` container should work just fine.
+
 
 # local docker
 This is local, without vscode, ready to serve.
