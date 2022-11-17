@@ -1,11 +1,37 @@
 import os.path
 import sqlite3
 import time
+import subprocess
+
 
 from aiohttp import request
 from flask import Flask, render_template, request
+from flask_apscheduler import APScheduler
+from subprocess import check_output
+
+class Config:
+    SCHEDULER_API_ENABLED = True
+
+api_key = check_output('echo $API_KEY', shell=True).decode('utf-8').strip()
+if api_key == '':
+    raise KeyError("Cannot find env var: 'API_KEY'")
 
 app = Flask(__name__)
+app.config.from_object(Config())
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+@scheduler.task('cron', id='cheevo_job', minute='*/20')
+def cheevo_job():
+    '''Job to pull cheevos'''
+    subprocess.call(["python", "../backend/triumph-tracker.py"])
+
+@scheduler.task('cron', id='manifest_job', hour='00', minute='00')
+def manifest_job():
+    '''Job to refresh manifest'''
+    subprocess.call(["python", "../backend/manifest-destiny.py"])
 
 def get_db_connection():
     '''Set up sqlite3 connection'''
