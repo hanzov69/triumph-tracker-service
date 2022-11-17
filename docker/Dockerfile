@@ -13,7 +13,8 @@ ENV ALPINE_VERSION=3.16
 # update apk repo
 RUN echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/main" >> /etc/apk/repositories && \
     echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/community" >> /etc/apk/repositories &&\
-    apk update
+    apk update &&\
+    apk add build-base
     
 RUN mkdir -p /app
 COPY app/ /app/
