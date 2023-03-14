@@ -15,6 +15,7 @@ logging.basicConfig(
 LOGGER = logging.getLogger('triumph-tracker')
 # these are how the manifest labels them, not the rewarded titles
 WANTED_SEALS = [
+    'Root of Nightmares',
     'King\'s Fall',
     'Last Wish',
     'Vow of the Disciple',
