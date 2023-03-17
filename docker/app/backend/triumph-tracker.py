@@ -49,36 +49,33 @@ def get_raid_hashes(wanted_seals: list) -> dict:
     #  make the sql result nicer to use later
     presentation_nodes = {node['hash']: node for node in presentation_nodes}
     record_defns = {record['hash']: record for record in record_defns}
-    seals_item = [
-        item for item in presentation_nodes.values()
-        if item['displayProperties']['name'] == 'Seals'
+    seals_data = [
+        item for item in presentation_nodes.values() 
+        if item['nodeType'] == 3
+        and item['displayProperties']['name'] in wanted_seals
     ]
-    assert len(seals_item) == 1
-    seals_item = seals_item[0]
+    assert len(seals_data) > 0
     raid_hashes = {}
-    for seal in seals_item['children']['presentationNodes']:
-        nodehash = seal['presentationNodeHash']
-        nodematch = presentation_nodes.get(nodehash)
-        if nodematch['displayProperties']['name'] in wanted_seals:
-            raid_hashes.update({
-                nodematch['displayProperties']['name']: {
-                    'records': {
-                        record['recordHash']: (
-                            record_defns.get(
-                                record['recordHash']
-                            )['displayProperties']['name'],
-                            record_defns.get(
-                                record['recordHash']
-                            )['displayProperties']['description']
-                        )
-                        for record in nodematch['children']['records']
-                    },
-                    'hash': nodehash,
-                    'title': record_defns.get(
-                        nodematch['completionRecordHash']
-                    )['titleInfo']['titlesByGender']
-                }
-            })
+    for seal in seals_data:
+        raid_hashes.update({
+            seal['displayProperties']['name']: {
+                'records': {
+                    record['recordHash']: (
+                        record_defns.get(
+                            record['recordHash']
+                        )['displayProperties']['name'],
+                        record_defns.get(
+                            record['recordHash']
+                        )['displayProperties']['description']
+                    )
+                    for record in seal['children']['records']
+                },
+                'hash': seal['hash'],
+                'title': record_defns.get(
+                    seal['completionRecordHash']
+                )['titleInfo']['titlesByGender']
+            }
+        })
     return raid_hashes
 
 async def get_player_completion(bungie_name, bungie_code, raid_hashes) -> dict:
