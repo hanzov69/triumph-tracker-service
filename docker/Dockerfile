@@ -14,13 +14,14 @@ ENV ALPINE_VERSION=3.16
 RUN echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/main" >> /etc/apk/repositories && \
     echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/community" >> /etc/apk/repositories &&\
     apk update &&\
-    apk add bash
+    apk add bash gcc
 
 RUN mkdir -p /app
 COPY app/ /app/
 RUN ls -la /app
 
 RUN pip install --upgrade pip
+RUN pip install -U pip setuptools wheel
 ENV PYTHONPATH /usr/lib/python3.10/site-packages
 RUN pip install -r ./app/requirements.txt
 

@@ -29,4 +29,4 @@ jobs:
           context: "{{defaultContext}}:docker"
           file: Dockerfile
           push: true
-          tags: ghcr.io/hanzov69/triumph-tracker:latest
+          tags: ghcr.io/hanzov69/triumph-tracker:build-latest
