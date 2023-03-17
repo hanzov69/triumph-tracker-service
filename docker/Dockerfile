@@ -1,4 +1,4 @@
-FROM python:3-alpine3.17
+FROM python:3-alpine3.16
 LABEL maintainer="hanzov69 <hanzo@freezerpants.com>"\
     org.opencontainers.image.authors="hanzov69 <hanzo@freezerpants.com>" \
     architecture="amd64/x86_64" \
@@ -22,7 +22,7 @@ RUN ls -la /app
 
 RUN pip install --upgrade pip
 RUN pip install -U pip setuptools wheel
-ENV PYTHONPATH /usr/lib/python3.11/site-packages
+ENV PYTHONPATH /usr/lib/python3.10/site-packages
 RUN pip install -r ./app/requirements.txt
 
 EXPOSE 8000
