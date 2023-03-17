@@ -1,5 +1,5 @@
 aiobungie
-aiohttp
+aiohttp==3.8.4
 aiosignal==1.2.0
 APScheduler==3.9.1.post1
 async-timeout==4.0.2
