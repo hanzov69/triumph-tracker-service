@@ -14,7 +14,7 @@ ENV ALPINE_VERSION=3.16
 RUN echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/main" >> /etc/apk/repositories && \
     echo "http://dl-4.alpinelinux.org/alpine/v${ALPINE_VERSION}/community" >> /etc/apk/repositories &&\
     apk update &&\
-    apk add bash gcc musl-dev
+    apk add bash gcc musl-dev python3-dev
 
 RUN mkdir -p /app
 COPY app/ /app/
