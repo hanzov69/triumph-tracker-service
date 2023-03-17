@@ -26,5 +26,5 @@ RUN pip install -r ./app/requirements.txt
 
 EXPOSE 8000
 
-ENTRYPOINT [ "/app/entry.sh" ]
+#ENTRYPOINT [ "/app/entry.sh" ]
 CMD ["/app/start.sh"]
