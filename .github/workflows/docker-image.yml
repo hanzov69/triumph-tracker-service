@@ -1,4 +1,4 @@
-name: Deploy triumph-tracker Container
+name: triumph-tracker container builder
 
 on:
   push:
@@ -29,4 +29,4 @@ jobs:
           context: "{{defaultContext}}:docker"
           file: Dockerfile
           push: true
-          tags: ghcr.io/hanzov69/triumph-tracker:build-latest
+          tags: ghcr.io/hanzov69/triumph-tracker:latest
