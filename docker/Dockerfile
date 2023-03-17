@@ -1,8 +1,8 @@
-FROM python:3-alpine3.16
+FROM python:3-alpine3.17
 LABEL maintainer="hanzov69 <hanzo@freezerpants.com>"\
     org.opencontainers.image.authors="hanzov69 <hanzo@freezerpants.com>" \
     architecture="amd64/x86_64" \
-    alpine-version="3.16" \
+    alpine-version="3.17" \
     org.opencontainers.image.title="triumph-tracker" \
     org.opencontainers.image.description="Gunicorn + Flask + Python Docker image running on Alpine Linux for triumph-tracker" \
     org.opencontainers.image.url="https://github.com/hanzov69?tab=packages&repo_name=triumph-tracker-service" \
