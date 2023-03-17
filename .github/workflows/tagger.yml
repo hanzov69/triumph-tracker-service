@@ -19,8 +19,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            name/app
-            ghcr.io/username/app
+            ghcr.io/hanzov69/triumph-tracker
           # generate Docker tags based on the following events/attributes
           tags: |
             type=semver,pattern={{version}}
@@ -40,8 +39,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          push: true
+          context: "{{defaultContext}}:docker"
           file: Dockerfile
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
