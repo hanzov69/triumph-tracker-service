@@ -22,7 +22,7 @@ RUN ls -la /app
 
 RUN pip install --upgrade pip
 RUN pip install -U pip setuptools wheel
-ENV PYTHONPATH /usr/lib/python3.10/site-packages
+ENV PYTHONPATH /usr/lib/python3.11/site-packages
 RUN pip install -r ./app/requirements.txt
 
 EXPOSE 8000
