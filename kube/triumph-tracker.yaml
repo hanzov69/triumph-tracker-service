@@ -28,6 +28,9 @@ spec:
               key: API_KEY
       imagePullSecrets:
       - name: dockerconfigjson-github-com
+      nodeSelector:
+        type: powerful
+
 ---
 apiVersion: v1
 kind: Service
