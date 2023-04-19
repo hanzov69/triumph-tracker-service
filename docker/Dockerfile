@@ -27,5 +27,6 @@ RUN pip install -r ./app/requirements.txt
 
 EXPOSE 8000
 
+RUN chmod +x /app/entry.sh && chmod +x /app/start.sh
 ENTRYPOINT [ "/app/entry.sh" ]
 CMD ["/app/start.sh"]
