@@ -174,6 +174,7 @@ def init_clan_db(db: Path) -> None:
                 ('Zrg', 'Spaceballs: The Username', 5169),
                 ('Tam', 'Tamarzan', 6907),
                 ('Maha', 'Maharunn', 5435),
+                ('Tiger', 'Tiger_1138', 1460),
                 ('Polaris', 'Polaris', 7833),
                 ('Roland', 'Rolandgunslingr', 8593),
             ]
