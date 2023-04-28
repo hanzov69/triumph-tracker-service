@@ -179,6 +179,7 @@ def init_clan_db(db: Path) -> None:
                 ('Maha', 'Maharunn', 5435),
                 ('Polaris', 'Polaris', 7833),
                 ('Roland', 'Rolandgunslingr', 8593),
+                ('Tiger', 'Tiger_1138', 1460),
             ]
         )
     con.close()
