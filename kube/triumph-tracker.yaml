@@ -57,4 +57,4 @@ metadata:
     app: triumph-tracker
 type: Opaque
 stringData:
-    API_KEY: <path:kube/data/bungie#bungie_api_key>
+    API_KEY: <REPLACE_WITH_YOUR_API_KEY>
