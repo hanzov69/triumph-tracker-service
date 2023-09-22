@@ -1,4 +1,4 @@
-name: Deploy triumph-tracker Container
+name: triumph-tracker container builder
 
 on:
   push:

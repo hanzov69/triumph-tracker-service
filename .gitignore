@@ -160,7 +160,6 @@ cython_debug/
 #.idea/
 
 *_status.html
-*.txt
 *.sqlite3
 *.pat
 #.devcontainer/

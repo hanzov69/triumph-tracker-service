@@ -28,6 +28,9 @@ spec:
               key: API_KEY
       imagePullSecrets:
       - name: dockerconfigjson-github-com
+      nodeSelector:
+        type: powerful
+
 ---
 apiVersion: v1
 kind: Service
@@ -54,4 +57,4 @@ metadata:
     app: triumph-tracker
 type: Opaque
 stringData:
-    API_KEY: "12345"
+    API_KEY: <REPLACE_WITH_YOUR_API_KEY>
