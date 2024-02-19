@@ -164,3 +164,4 @@ cython_debug/
 *.pat
 #.devcontainer/
 .DS_Store
+version.txt

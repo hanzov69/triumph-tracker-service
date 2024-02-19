@@ -85,13 +85,15 @@ async def get_player_completion(bungie_name, bungie_code, raid_hashes) -> dict:
     '''Uses the item hashes with player data to get completion information'''
     async with AIO_CLIENT.rest:
         # identify the main membershiptype (i.e. the one you picked during cross-save setup)
-        profiles = await AIO_CLIENT.fetch_player(bungie_name, bungie_code)
+        profiles = await AIO_CLIENT.fetch_membership(bungie_name, bungie_code)
+        LOGGER.info('First pop')
         main_membershiptype = list(set([f.crossave_override for f in profiles])).pop()
         # band-aid for people who haven't cross-saved
         if (main_membershiptype == aiobungie.MembershipType.NONE) or (len(profiles) == 1):
             main_membershiptype = profiles[0].type
         # get the actual profile that bungie-api will be happy to work with
-        main_profile = await AIO_CLIENT.fetch_player(bungie_name, bungie_code, main_membershiptype)
+        main_profile = await AIO_CLIENT.fetch_membership(bungie_name, bungie_code, main_membershiptype)
+        LOGGER.info('second pop')
         profile_id = main_profile.pop()
         profile = await profile_id.fetch_self_profile([aiobungie.ComponentType.RECORDS])
     # get the objective hashes from manifest
