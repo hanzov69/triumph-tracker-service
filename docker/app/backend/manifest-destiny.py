@@ -23,7 +23,7 @@ async def check_manifest():
     # if it doesn't exist, go get it and save the version
     if not MANIFEST_DATA.exists():
         async with AIO_CLIENT.rest:
-            await AIO_CLIENT.rest.download_manifest(path=MANIFEST_DATA.parent)
+            await AIO_CLIENT.rest.download_sqlite_manifest(path=MANIFEST_DATA.parent)
             remote_version = await AIO_CLIENT.rest.fetch_manifest_version()
         with MANIFEST_VERSION.open('w') as f:
             f.write(remote_version)
