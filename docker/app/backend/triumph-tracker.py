@@ -23,7 +23,9 @@ WANTED_SEALS = [
     'Vault of Glass',
     'Spire of the Watcher',
     'Duality',
-    'Crota\'s End'
+    'Crota\'s End',
+    "Ghosts of the Deep",
+    "Warlord\'s Ruin"
 ]
 MANIFEST_DATA = Path(__file__).parent / '../manifest.sqlite3'
 CLAN_DATA = Path(__file__).parent / '../clan_data.sqlite3'
