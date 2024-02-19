@@ -115,6 +115,8 @@ async def get_player_completion(bungie_name, bungie_code, raid_hashes) -> dict:
             # add Raid: prefix for King's Fall due to Dennis labelling 2 triumphs the same
             if raid == 'King\'s Fall' and 'Trophies' in description:
                 triumph = f'Raid: {triumph}'
+            if raid == 'Crota\'s End' and 'Trophies' in description:
+                triumph = f'Raid: {triumph}'
             record = profile.profile_records.get(key)
             objective_list = record.objectives if record.objectives is not None else record.interval_objectives
             objective_data = [
