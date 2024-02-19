@@ -1,4 +1,4 @@
-import json
+import ujson
 import logging
 import sqlite3
 from pathlib import Path
@@ -41,11 +41,11 @@ def get_raid_hashes(wanted_seals: list) -> dict:
     with con:
         # load the json column data (actually a blob) as dict
         presentation_nodes = [
-            json.loads(item[0])
+            ujson.loads(item[0])
             for item in con.execute("SELECT json FROM DestinyPresentationNodeDefinition;").fetchall()
         ]
         record_defns = [
-            json.loads(item[0])
+            ujson.loads(item[0])
             for item in con.execute("SELECT json FROM DestinyRecordDefinition;").fetchall()
         ]
     con.close()
@@ -86,21 +86,19 @@ async def get_player_completion(bungie_name, bungie_code, raid_hashes) -> dict:
     async with AIO_CLIENT.rest:
         # identify the main membershiptype (i.e. the one you picked during cross-save setup)
         profiles = await AIO_CLIENT.fetch_membership(bungie_name, bungie_code)
-        LOGGER.info('First pop')
         main_membershiptype = list(set([f.crossave_override for f in profiles])).pop()
         # band-aid for people who haven't cross-saved
         if (main_membershiptype == aiobungie.MembershipType.NONE) or (len(profiles) == 1):
             main_membershiptype = profiles[0].type
         # get the actual profile that bungie-api will be happy to work with
         main_profile = await AIO_CLIENT.fetch_membership(bungie_name, bungie_code, main_membershiptype)
-        LOGGER.info('second pop')
-        profile_id = main_profile.pop()
+        profile_id = main_profile[0]
         profile = await profile_id.fetch_self_profile([aiobungie.ComponentType.RECORDS])
     # get the objective hashes from manifest
     con = sqlite3.connect(MANIFEST_DATA)
     with con:
         objective_defns = [
-            json.loads(item[0]) 
+            ujson.loads(item[0]) 
             for item in con.execute("SELECT json FROM DestinyObjectiveDefinition;").fetchall()
         ]
     con.close()
