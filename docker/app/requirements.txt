@@ -24,6 +24,6 @@ typing_extensions==4.4.0
 tzdata==2022.6
 tzlocal==4.2
 ujson==5.9.0
-Werkzeug==3.0.1
+Werkzeug==3.0.3
 yarl==1.8.2
 zipp==3.10.0
