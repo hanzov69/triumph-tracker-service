@@ -25,7 +25,8 @@ WANTED_SEALS = [
     'Duality',
     'Crota\'s End',
     "Ghosts of the Deep",
-    "Warlord\'s Ruin"
+    "Warlord\'s Ruin",
+    "Salvation\'s Edge"
 ]
 MANIFEST_DATA = Path(__file__).parent / '../manifest.sqlite3'
 CLAN_DATA = Path(__file__).parent / '../clan_data.sqlite3'
@@ -175,7 +176,6 @@ def init_clan_db(db: Path) -> None:
             "INSERT INTO players(label, bungie_name, bungie_code) VALUES(?, ?, ?)",
             [
                 ('Felix', 'Felix', 3964),
-                ('Hanzo', 'MrChristian', 4697),
                 ('Chuck', 'Chuckm', 8947),
                 ('Zrg', 'Spaceballs: The Username', 5169),
                 ('Tam', 'Tamarzan', 6907),
