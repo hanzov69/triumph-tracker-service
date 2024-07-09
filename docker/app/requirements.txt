@@ -26,4 +26,4 @@ tzlocal==4.2
 ujson==5.9.0
 Werkzeug==3.0.1
 yarl==1.8.2
-zipp==3.10.0
+zipp==3.19.1
